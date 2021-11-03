@@ -1,0 +1,20 @@
+
+package com.terrelandia;
+
+import com.facebook.react.ReactActivity;
+import android.content.Intent;
+import android.os.Bundle;
+//import androidx.appcompat.app.AppCompatActivity;
+
+
+public class SplashActivity extends  ReactActivity//AppCompatActivity 
+{
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+}
