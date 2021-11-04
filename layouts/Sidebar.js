@@ -1,36 +1,59 @@
-import * as React from 'react';
-import { Button, View } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+// Custom Navigation Drawer / Sidebar with Image and Icon in Menu Options
+// https://aboutreact.com/custom-navigation-drawer-sidebar-with-image-and-icon-in-menu-options/
 
-function HomeScreen({ navigation }) {
+import React from 'react';
+import {
+  SafeAreaView, 
+  StyleSheet,
+  Image
+} from 'react-native';
+
+import {
+  DrawerContentScrollView,
+  DrawerItemList
+} from '@react-navigation/drawer';
+
+const CustomSidebarMenu = (props) => {
+   
+  const proileImage ='https://clientes.terrelandia.com/public/img/logo.png';
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button
-        onPress={() => navigation.navigate('Notifications')}
-        title="Go to notifications"
+    <SafeAreaView style={{flex: 1}}>
+     { /*Top Large Image */}
+      <Image
+        source={{uri:   proileImage}}
+        style={styles.sideMenuProfileIcon}
       />
-    </View>
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+     
+     
+        
+      </DrawerContentScrollView>
+     
+     
+    </SafeAreaView>
   );
-}
+};
 
-function NotificationsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button onPress={() => navigation.goBack()} title="Go back home" />
-    </View>
-  );
-}
+const styles = StyleSheet.create({
+  sideMenuProfileIcon: {
+    resizeMode: 'center',
+    width: 100,
+    height: 100,
+    borderRadius: 100 / 2,
+    alignSelf: 'center',
+  },
+  iconStyle: {
+    width: 15,
+    height: 15,
+    marginHorizontal: 5,
+  },
+  customItem: {
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
 
-const Drawer = createDrawerNavigator();
-
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
-}
+export default CustomSidebarMenu;

@@ -23,4 +23,4 @@ const makeRequest = async(uri, data = {}, headers = {}, metodo = "GET") => {
         return e.response
     }
 }
-export default makeRequest
+export { makeRequest as default, base_url }

@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, Text, FlatList, ActivityIndicator, View } from "react-native";
 
-import AppStyles, { Colors, Fonts } from "../../layouts/AppStyles";
+import AppStyles  from "../../layouts/AppStyles";
 //api
 import makeRequest from "../../api";
+import Item from "./Item";
 
 
 export default function Loteamientos({ navigation }) {
@@ -29,13 +30,13 @@ export default function Loteamientos({ navigation }) {
 
     useEffect(function () {
         listarLoteamientos()
+        return ()=>{
+            data.length = 0;
+        }
     }, [])//solo en el primer renderizado
 
     const renderItem = ({ item }) => (
-        <View>
-            <Text style={AppStyles.TextH1}>{item.nombre} </Text>
-            <Text style={AppStyles.Text}>{item.departamento}, {item.ciudad}</Text>
-        </View>
+        <Item  navigation={navigation} data={item}  ></Item>
     );
     return requesting ? <ActivityIndicator size="large" color="#00ff00" /> :
         <SafeAreaView style={AppStyles.Container}>

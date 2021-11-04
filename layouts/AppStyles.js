@@ -2,12 +2,14 @@
  import { Image, StyleSheet } from "react-native";
 
  const Colors = {
+     black: "#444444",
      gray: "#949494",
      primary: "#65962d",
      lightPrimary: "#b1d03b"
  }
  const Fonts = {
-     title: "NooplaRegular"
+     title: "NooplaRegular",
+     normal: "NunitoRegular"
  }
  const tema = StyleSheet.create({
      Logo: {
@@ -18,10 +20,10 @@
      HeaderBar: {
 
          headerStyle: {
-             backgroundColor: '#ffffff',
+             backgroundColor: '#ffffff', 
          },
          headerTitleStyle: {
-             fontFamily: Fonts.title,
+             fontFamily: Fonts.normal,
              color: Colors.gray
          },
          headerRight: ({ tintColor }) => ( <
@@ -37,13 +39,15 @@
      },
      Container: {
          flex: 1,
-         paddingTop: 15,
+
          display: "flex",
          justifyContent: "center",
          alignItems: "center",
          flexDirection: "column",
          width: "100%",
-         height: "100%"
+         height: "100%",
+         padding: 10
+
      },
 
      AlertSuccess: {

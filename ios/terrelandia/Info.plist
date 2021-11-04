@@ -54,6 +54,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>NooplaRegular.ttf</string>
+		<string>NunitoRegular.ttf</string>
 	</array>
 </dict>
 </plist>

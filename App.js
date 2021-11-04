@@ -1,34 +1,13 @@
 import * as React from 'react';
-import { Button, View, Image } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import Login from './screens/Login/index';
-
-import SplashScreen from 'react-native-splash-screen';
-import ResetPassword from './screens/ResetPassword';
-import Loteamientos from './screens/Loteamientos';
-import tema, { Fonts, Colors}  from './layouts/AppStyles';
-import { useEffect } from 'react';
  
-  
-const Drawer = createDrawerNavigator();
+//context
+import { AuthContext, AuthProvider } from './api/AuthContext';
+import SplashScreen from 'react-native-splash-screen'; 
+import { useEffect } from 'react'; 
+import Navigator from './layouts/Navigator';
 
 
 
-const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'rgb(242, 242, 242)',
-    background: 'rgb(242, 242, 242)',
-    card: '#65962d',
-    text: 'rgb( 242, 242, 242)',
-    border: 'rgb(199, 199, 204)',
-    notification: 'rgb(255, 69, 58)',
-
-
-  },
-};
 
 
 
@@ -42,23 +21,15 @@ export default function App() {
           />
         )
         */
-        useEffect(() => {SplashScreen.hide(); }, []);
+  useEffect(() => { SplashScreen.hide(); }, []);
+
+ 
+
   return (
- 
-    <NavigationContainer theme={MyTheme}  >
-      <Drawer.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}  >
+    <AuthProvider>
+     <Navigator></Navigator>
+    </AuthProvider>
 
-        <Drawer.Screen name="Login" component={Login} />
-        <Drawer.Screen name="ResetPassword" component={ResetPassword} />
-        <Drawer.Screen name="Loteamientos" component={Loteamientos}   
-        options={{ headerShown:true,   title: 'Loteamientos', ...tema.HeaderBar
-        
-       }  }/>
- 
-      </Drawer.Navigator>
-
-
-    </NavigationContainer>
 
 
   );
