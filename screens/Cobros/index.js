@@ -1,38 +1,69 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator , Text, View, TouchableOpacity } from "react-native";
-import makeRequest from '../../api/index';
-import { Colors, Fonts } from "../../layouts/AppStyles";
+import { ActivityIndicator, Text, View, TouchableOpacity, Button } from "react-native";
+import AppStyles, { Colors, Fonts } from "../../layouts/AppStyles";
 import Icon from 'react-native-vector-icons/FontAwesome5'
+//servicios
+import { listarCobros } from '../../api/Service';
 
- 
+
 export default function ({ loteamiento }) { //id loteamiento
 
     const [requesting, setRequesting] = useState(false)
-    const [data, setData] = useState([])
-    const listarCobros = async () => {
+    /*
+    data { data, page, totalPages }
+    */
+    const [pagination, setPagination] = useState({ data: [], page: 1, totalPaginas: 0 });
 
-        const urlLotea = "api/cobros" + ( loteamiento? '?loteamiento=' + loteamiento : '' );
+
+    const listarCobros_ = async () => {
+
         setRequesting(true)
-        const jsonResp = await makeRequest(urlLotea)
-        if (jsonResp.status == 200) {
-            //    console.log(JSON.stringify(jsonResp.data))
-            setData(jsonResp.data)
+
+        let jsonResp = await listarCobros({ loteamiento: loteamiento, page: pagination.page });
+        if (jsonResp?.status == 200) {
+            //   console.log(JSON.stringify(jsonResp.data) , null, 2)
+
+            setPagination({
+                data: jsonResp.data.data,
+                page: jsonResp.data.current_page,
+                totalPaginas: jsonResp.data.last_page
+            })
+
         } else
             alert(jsonResp.data.message)
+
         setRequesting(false)
     }
 
     useEffect(function () {
-        listarCobros()
-    }, [])//solo en el primer renderizado
+        listarCobros_()
 
-    const renderItem = ( item, index ) => (
-        <View key={index} style={{ width:"100%", marginBottom:10, padding: 5, backgroundColor:"white"}}>
+    }, [loteamiento, pagination.page])//solo en el primer renderizado []
+
+
+
+    const LoadMoreRandomData = () => {
+        console.log('LoadMoreRandomData up to ', pagination.totalPaginas)
+        //page: page +1
+        const validatedPage = pagination.page ? pagination.page : 0;
+        if (pagination.totalPaginas > validatedPage)
+            setPagination({ ...pagination, page: validatedPage + 1 })
+
+    }
+
+
+
+
+    const renderItem = (item) => (
+        <View key={item.cuota_id} style={{ width: "100%", marginBottom: 10, padding: 5, backgroundColor: "white" }}>
             {
-               ! loteamiento &&  <Text style={{ fontFamily: Fonts.normal, fontSize: 24, textAlign: "left", marginTop: 5 }}>
+                !loteamiento && <Text style={{ fontFamily: Fonts.normal, fontSize: 24, textAlign: "left", marginTop: 5 }}>
                     Loteamiento: <Text style={{ fontWeight: "bold" }}>{item?.loteamiento}</Text></Text>
-                
+
             }
+            <Text style={{ fontFamily: Fonts.normal, fontSize: 16, marginLeft: 20 }}>
+                {item.fecha}
+            </Text>
             <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                     <Icon name="map-marked-alt" size={24} solid color={Colors.black}></Icon>
@@ -52,14 +83,57 @@ export default function ({ loteamiento }) { //id loteamiento
                 </View>
                 <TouchableOpacity style={{ display: "flex", flexDirection: "row" }}>
                     <Icon name="search" size={20} solid color={Colors.black}></Icon>
-                    <Text style={{ fontFamily: Fonts.normal, fontSize: 20 , color: Colors.black}}>Ver Detalle</Text>
+                    <Text style={{ fontFamily: Fonts.normal, fontSize: 20, color: Colors.black }}>Ver Detalle</Text>
                 </TouchableOpacity>
             </View>
 
         </View>
     );
 
-    return requesting ? <ActivityIndicator size="large" color="#00ff00" /> : data.map(  renderItem)
-    
+
+    const Botones = () => {
+
+        const anterior = () => {
+            let before = (pagination.page - 1);
+            setPagination({ ...pagination, page: before })
+        }
+        const siguiente = () => {
+            let after = (pagination.page + 1);
+            setPagination({ ...pagination, page: after })
+        }
+        const BtnAnt = () => <Button onPress={anterior} title='Anterior' />
+        const BtnSig = () => <Button onPress={siguiente} title='Siguiente' />
+
+        if (!(pagination.totalPaginas)) return null;
+
+        if (pagination.page == 1) return <View style={{ marginBottom: 50 }}>
+            <BtnSig />
+        </View>
+
+        return pagination.page < pagination.totalPaginas ?
+            <View style={{ marginBottom: 50, display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
+                <BtnAnt /><BtnSig />
+            </View>
+            :
+            <View style={{ marginBottom: 50 }}>
+                <BtnAnt />
+            </View>
+    }
+
+
+
+
+    //    onEndReached={LoadMoreRandomData} 
+    return <View>
+
+        {pagination?.data.map(renderItem)}
+        {requesting && <ActivityIndicator size="large" color="#00ff00" />}
+
+        <Botones></Botones>
+        <Text style={{ ...AppStyles.Text, textAlign: "center", marginBottom: 50 }}>Página {pagination.page} de {pagination.totalPaginas}</Text>
+
+    </View>
+
+
     // <FlatList style={estilos.lista} data={data} renderItem={renderItem} keyExtractor={(item, index) => index}></FlatList>
 }

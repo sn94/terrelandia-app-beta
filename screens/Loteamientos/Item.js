@@ -28,9 +28,6 @@ export default function ({ data , navigation}) {
 
         <Text style={AppStyles.TextH1}>{item.nombre} </Text>
         <Text style={{ fontFamily: Fonts.normal, }}>{item.departamento}, {item.ciudad}</Text>
-        <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-            <Text style={{ fontFamily: Fonts.normal, color: Colors.primary, fontSize: 18 }}>{item.lotes_count} lotes</Text>
-            <Text style={{ fontFamily: Fonts.normal, fontSize: 18, backgroundColor: Colors.primary, color: "white" }}>Desde {item.precio_desde}</Text>
-        </View>
+      
     </TouchableOpacity>
 }

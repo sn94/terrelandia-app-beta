@@ -39,7 +39,7 @@ const CustomSidebarMenu = (props) => {
 const styles = StyleSheet.create({
   sideMenuProfileIcon: {
     resizeMode: 'center',
-    width: 100,
+    width: 120,
     height: 100,
     borderRadius: 100 / 2,
     alignSelf: 'center',

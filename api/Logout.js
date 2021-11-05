@@ -17,19 +17,15 @@ export default function () {
         'Content-Type': 'application/json', 'Accept': 'application/json',
         'Authorization': 'Bearer ' + auth
     }
+     
     makeRequest('api/logout', {}, headers)
         .then(
-            res => {
-                if (res.status == 200) { 
-                    console.log("CORRECTO CIERRE")
-                    setAuth(''); }
-
-            }
+            res => {   setAuth( '' );     } 
         )
         .catch(
             e => {
-                console.log(E.response);
-                setAuth('');
+                console.log(E.response); 
+                setAuth( '' );
             }
         )
     return auth ? <View style={{width:"100%",flex:1, backgroundColor: Colors.primary, display:"flex", justifyContent: 'center', alignItems:"center"}}>

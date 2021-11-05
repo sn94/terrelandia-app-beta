@@ -1,12 +1,12 @@
 
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { Colors, Fonts } from '../../layouts/AppStyles'
 import Cobros from '../Cobros/index';
-import DropDown from "./DropDown";
+
 
 const Box = {
     width: "100%",
@@ -70,9 +70,11 @@ export default function Detail({ route }) {
             </View>
         </>
     }
-    return <ScrollView style={{ padding: 10 }}>
-{ loteamiento &&  <ParticularLoteamiento /> }
-        
+
+    
+    return <ScrollView style={{ padding: 10, }}>
+        {loteamiento && <ParticularLoteamiento />}
+
 
         <View style={{ marginTop: 10, padding: 5, width: 240, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
             <Icon name="file-invoice-dollar" size={30} color={Colors.black}  ></Icon>

@@ -52,7 +52,16 @@ export default function () {
 
   //estado del token definira la navegacion
   const { auth } = useContext(AuthContext);
- 
+
+  const LoteamientosOpts = () => {
+    return <Stack.Navigator>
+      <Stack.Screen name="Loteamientos" component={Loteamientos}
+        options={{ headerShown: false }} />
+      <Stack.Screen name="DetalleLoteamiento" component={Detail}
+        options={{ headerShown: false }} />
+    </Stack.Navigator>
+  }
+
   const BeforeAuth = () => {
 
     return <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }} >
@@ -63,46 +72,35 @@ export default function () {
 
 
   const AfterAuth = () => {
-    return <Drawer.Navigator initialRouteName="Loteamientos" screenOptions={{ headerShown: false }}  drawerContent={(props)=> <SideBar {...props} />}  >
-      <Drawer.Screen name="Loteamientos" component={Loteamientos}
+    return <Drawer.Navigator initialRouteName="LoteamientosGroup" screenOptions={{ headerShown: false }} drawerContent={(props) => <SideBar {...props} />}  >
+      <Drawer.Screen name="LoteamientosGroup" component={LoteamientosOpts}
         options={{
-          headerShown: true, title: 'Loteamientos', ...tema.HeaderBar, 
-            drawerIcon:()=>  <Icon name="map-marked-alt" size={20} solid color={Colors.black}></Icon> ,
-      
+          headerShown: true, title: 'Loteamientos', ...tema.HeaderBar,
+          drawerIcon: () => <Icon name="map-marked-alt" size={20} solid color={Colors.black}></Icon>,
+
         }} />
-           <Drawer.Screen name="DetalleLoteamiento" component={Detail}
+
+
+      <Drawer.Screen name="Logout" component={Logout}
         options={{
-          headerShown: true, title: 'Cobros', ...tema.HeaderBar, 
-            drawerIcon:()=>  <Icon name="dollar-sign" size={20} solid color={Colors.black}></Icon> ,
-      
-        }} />
-        
-     <Drawer.Screen name="Logout"  component={Logout}
-        options={{
-          headerShown: false, title: 'Salir', ...tema.HeaderBar,   drawerIcon:()=>  <Icon name="sign-out-alt" size={20} solid color={Colors.black}></Icon>
+          headerShown: false, title: 'Salir', ...tema.HeaderBar, drawerIcon: () => <Icon name="sign-out-alt" size={20} solid color={Colors.black}></Icon>
         }} />
     </Drawer.Navigator>
 
   }
   //drawerContent={()=>( <Image style={{width:100,height:100}} source={{uri: 'https://clientes.terrelandia.com/public/img/logo.png'}}/>)}
- 
- return <NavigationContainer theme={MyTheme}    >
-    <Drawer.Navigator     >
-      {auth ? <Stack.Screen
-        name="AfterAuth"
-        component={AfterAuth}
-        options={{ headerShown: false     }}
-      /> :
-        <Stack.Screen
-          name="BeforeAuth"
-          component={BeforeAuth}
-          options={{ headerShown: false }}
-        />
-      }
 
 
-    </Drawer.Navigator>
 
+
+
+  return <NavigationContainer theme={MyTheme}    >
+    {
+      auth ?
+        <AfterAuth />
+        :
+        <BeforeAuth />
+    }
 
   </NavigationContainer>
 }
