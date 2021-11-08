@@ -17,7 +17,8 @@ export default function ResetPassword() {
 
         const urlreset = "api/password/reset";
         setRequesting({ requesting: true })
-        const jsonResp = await makeRequest(urlreset, { ruc: ruc }, { 'Content-Type': 'application/json' },"POST")
+        const jsonResp = await makeRequest(urlreset, { ruc: ruc },
+             { 'Content-Type': 'application/json' },"POST")
 
         if (jsonResp.status == 200)
             setRequesting({ sent: true, message: jsonResp.data.message })

@@ -1,8 +1,7 @@
 import makeRequest from './index'
 
-const listarCobros = async(query = undefined) => {
 
-    let urlLotea = "api/cobros";
+const doQueryParams = function(query) {
     let queries = [];
 
     if (query) {
@@ -15,19 +14,38 @@ const listarCobros = async(query = undefined) => {
     }
 
     let queryparam = queries.join('&')
+    return queryparam
+}
+
+
+
+const listarLoteamientos = async() => {
+    let urlLotea = "api/loteamientos"
+    const jsonResp = await makeRequest(urlLotea)
+    return jsonResp //.data.message)
+}
+
+
+
+const getLoteamiento = async(idLoteamieno) => {
+    let urlLotea = "api/loteamientos/" + idLoteamieno;
+    const jsonResp = await makeRequest(urlLotea)
+    return jsonResp //.data.message)
+}
+
+
+const listarCobros = async(query = undefined) => {
+
+    let urlLotea = "api/cobros";
+    let queryparam = doQueryParams(query)
 
     // setRequesting(true)
     urlLotea = urlLotea + (queryparam != '' ? '?' + queryparam : '');
 
     const jsonResp = await makeRequest(urlLotea)
-
-    if (jsonResp.status == 200) {
-        //    console.log(JSON.stringify(jsonResp.data))
-        return jsonResp
-    } else
-        return jsonResp //.data.message)
-            // setRequesting(false)
+    return jsonResp //.data.message)
+        // setRequesting(false)
 }
 
 
-export { listarCobros }
+export { listarCobros, listarLoteamientos, getLoteamiento }

@@ -1,139 +1,108 @@
-import React, { useState, useEffect } from "react";
-import { ActivityIndicator, Text, View, TouchableOpacity, Button } from "react-native";
-import AppStyles, { Colors, Fonts } from "../../layouts/AppStyles";
+
+
+import React from "react";
+import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Icon from 'react-native-vector-icons/FontAwesome5'
-//servicios
-import { listarCobros } from '../../api/Service';
+import { useEffect, useState } from "react/cjs/react.development";
+import { Colors, Fonts } from '../../layouts/AppStyles'
+import ListaDeCobros from './Detalle';
+import { getLoteamiento } from '../../api/Service'
+
+const Box = {
+    width: "100%",
+
+    padding: 20, borderRadius: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 5
+};
+const detailStyles = StyleSheet.create({
+    titular: { width: "100%", marginBottom: 20, paddingLeft: 5 },
+
+    greenBox: {
+        ...Box,
+        backgroundColor: Colors.lightPrimary,
+    },
+    redBox: {
+        ...Box,
+        backgroundColor: "#ff6666",
+    },
+    BoxText: { fontFamily: Fonts.normal, color: "white", fontSize: 24, fontWeight: "bold" }
+})
 
 
-export default function ({ loteamiento }) { //id loteamiento
-
-    const [requesting, setRequesting] = useState(false)
-    /*
-    data { data, page, totalPages }
-    */
-    const [pagination, setPagination] = useState({ data: [], page: 1, totalPaginas: 0 });
 
 
-    const listarCobros_ = async () => {
 
-        setRequesting(true)
+export default function Index({ route }) {
 
-        let jsonResp = await listarCobros({ loteamiento: loteamiento, page: pagination.page });
-        if (jsonResp?.status == 200) {
-            //   console.log(JSON.stringify(jsonResp.data) , null, 2)
+    const [requesting, setRequesting] = useState({ requesting: false, loteamiento })
+    const idLoteamiento = route?.params?.loteamiento?.id
 
-            setPagination({
-                data: jsonResp.data.data,
-                page: jsonResp.data.current_page,
-                totalPaginas: jsonResp.data.last_page
-            })
 
-        } else
-            alert(jsonResp.data.message)
+    const verLoteamiento = async () => {
 
-        setRequesting(false)
+        setRequesting({ ...requesting, requesting: true })
+
+        getLoteamiento(idLoteamiento)
+            .then((jsonResp) => {
+                if (jsonResp?.status == 200) {
+                    console.log("LOTEAMIENTO", JSON.stringify(jsonResp, null, 2))
+                    setRequesting({ requesting: false, loteamiento: jsonResp.data })
+                } else {
+                    console.log(jsonResp.data.message)
+                    setRequesting({ ...requesting, requesting: false })
+                }
+            }).catch((err) => {
+                setRequesting({ ...requesting, requesting: false })
+                alert(err)
+            });
+    }
+    const { loteamiento } = requesting
+    const ParticularLoteamiento = () => {
+        return <>
+            <View style={detailStyles.titular}>
+                <Text style={{ fontFamily: Fonts.normal, fontSize: 24, color: Colors.black, textAlign: "left", marginTop: 5 }}>
+                    Loteamiento: <Text style={{ fontWeight: "bold" }}>{loteamiento?.nombre}</Text></Text>
+                <TouchableOpacity><Text style={{ fontFamily: Fonts.normal, }}>Ver mapa (pdf)</Text></TouchableOpacity>
+            </View>
+
+            <View style={detailStyles.greenBox}>
+                <View >
+                    <Text style={detailStyles.BoxText}>Cobrados</Text>
+                    <Text style={detailStyles.BoxText}>{loteamiento?.formatted_total_cuotas_cobradas}</Text>
+                </View>
+
+                <Icon name="arrow-up" size={70} solid color="#ffffff"></Icon>
+            </View>
+            <View style={detailStyles.redBox}>
+                <View >
+                    <Text style={detailStyles.BoxText}>En Mora</Text>
+                    <Text style={detailStyles.BoxText}>{loteamiento?.formatted_total_cuotas_en_mora}</Text>
+                </View>
+
+                <Icon name="arrow-down" size={70} solid color="#ffffff"></Icon>
+            </View>
+        </>
     }
 
     useEffect(function () {
-        listarCobros_()
+        console.log("Use effect Cobros index")
+        verLoteamiento()
+    }, [])
 
-    }, [loteamiento, pagination.page])//solo en el primer renderizado []
-
-
-
-    const LoadMoreRandomData = () => {
-        console.log('LoadMoreRandomData up to ', pagination.totalPaginas)
-        //page: page +1
-        const validatedPage = pagination.page ? pagination.page : 0;
-        if (pagination.totalPaginas > validatedPage)
-            setPagination({ ...pagination, page: validatedPage + 1 })
-
-    }
-
-
-
-
-    const renderItem = (item) => (
-        <View key={item.cuota_id} style={{ width: "100%", marginBottom: 10, padding: 5, backgroundColor: "white" }}>
-            {
-                !loteamiento && <Text style={{ fontFamily: Fonts.normal, fontSize: 24, textAlign: "left", marginTop: 5 }}>
-                    Loteamiento: <Text style={{ fontWeight: "bold" }}>{item?.loteamiento}</Text></Text>
-
-            }
-            <Text style={{ fontFamily: Fonts.normal, fontSize: 16, marginLeft: 20 }}>
-                {item.fecha}
+    return <ScrollView style={{ padding: 10, }}>
+        {requesting.requesting && <ActivityIndicator size="large" color="#00ff00" />}
+        <ParticularLoteamiento />
+        <View style={{ marginTop: 10, padding: 5, width: 240, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+            <Icon name="file-invoice-dollar" size={30} color={Colors.black}  ></Icon>
+            <Text style={{ fontFamily: Fonts.normal, fontSize: 24, color: Colors.black }}>
+                <Text style={{ fontWeight: "bold", }}>Últimas cobranzas</Text>
             </Text>
-            <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                    <Icon name="map-marked-alt" size={24} solid color={Colors.black}></Icon>
-                    <Text style={{ fontFamily: Fonts.normal, fontSize: 24, marginLeft: 20 }}>
-                        <Text style={{ fontWeight: "bold", color: Colors.black }}>{item.lote_description}</Text>
-                    </Text>
-                </View>
-                <Text style={{ color: Colors.primary, fontFamily: Fonts.normal, fontSize: 24 }}>
-                    <Text style={{ fontWeight: "bold" }}>Gs. {item.importe}</Text>
-                </Text>
-            </View>
-            <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 15, marginBottom: 20 }}>
-                <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <Icon name="chart-pie" size={20} solid={false} color={Colors.gray} ></Icon>
-                    <Text style={{ fontFamily: Fonts.normal, fontSize: 20, color: Colors.gray }}>{item.cuota_description} </Text>
-
-                </View>
-                <TouchableOpacity style={{ display: "flex", flexDirection: "row" }}>
-                    <Icon name="search" size={20} solid color={Colors.black}></Icon>
-                    <Text style={{ fontFamily: Fonts.normal, fontSize: 20, color: Colors.black }}>Ver Detalle</Text>
-                </TouchableOpacity>
-            </View>
-
         </View>
-    );
+        <ListaDeCobros loteamiento={loteamiento}></ListaDeCobros>
+    </ScrollView>
 
-
-    const Botones = () => {
-
-        const anterior = () => {
-            let before = (pagination.page - 1);
-            setPagination({ ...pagination, page: before })
-        }
-        const siguiente = () => {
-            let after = (pagination.page + 1);
-            setPagination({ ...pagination, page: after })
-        }
-        const BtnAnt = () => <Button onPress={anterior} title='Anterior' />
-        const BtnSig = () => <Button onPress={siguiente} title='Siguiente' />
-
-        if (!(pagination.totalPaginas)) return null;
-
-        if (pagination.page == 1) return <View style={{ marginBottom: 50 }}>
-            <BtnSig />
-        </View>
-
-        return pagination.page < pagination.totalPaginas ?
-            <View style={{ marginBottom: 50, display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
-                <BtnAnt /><BtnSig />
-            </View>
-            :
-            <View style={{ marginBottom: 50 }}>
-                <BtnAnt />
-            </View>
-    }
-
-
-
-
-    //    onEndReached={LoadMoreRandomData} 
-    return <View>
-
-        {pagination?.data.map(renderItem)}
-        {requesting && <ActivityIndicator size="large" color="#00ff00" />}
-
-        <Botones></Botones>
-        <Text style={{ ...AppStyles.Text, textAlign: "center", marginBottom: 50 }}>Página {pagination.page} de {pagination.totalPaginas}</Text>
-
-    </View>
-
-
-    // <FlatList style={estilos.lista} data={data} renderItem={renderItem} keyExtractor={(item, index) => index}></FlatList>
 }

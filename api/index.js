@@ -19,7 +19,7 @@ const makeRequest = async(uri, data = {}, headers = {}, metodo = "GET") => {
         return jsonResp
 
     } catch (e) {
-        console.log(JSON.stringify(e.response, null, 2))
+
         return e.response
     }
 }

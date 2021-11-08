@@ -1,12 +1,12 @@
 
 import React, { useContext, useState } from 'react';
 import { View, Text } from 'react-native';
-import makeRequest from '../api/index';
-import Theme,  { Colors } from '../layouts/AppStyles';
+import makeRequest from '../../api/index';
+import Theme,  { Colors } from '../../layouts/AppStyles';
 
 //LOGIN
-import Login from '../screens/Login/index'
-import { AuthContext } from './AuthContext';
+import Login from './Login'
+import { AuthContext } from '../../api/AuthContext';
 
 export default function () {
 

@@ -11,6 +11,7 @@
      title: "NooplaRegular",
      normal: "NunitoRegular"
  }
+
  const tema = StyleSheet.create({
      Logo: {
          width: 170,
@@ -20,7 +21,7 @@
      HeaderBar: {
 
          headerStyle: {
-             backgroundColor: '#ffffff', 
+             backgroundColor: '#ffffff',
          },
          headerTitleStyle: {
              fontFamily: Fonts.normal,
@@ -39,7 +40,6 @@
      },
      Container: {
          flex: 1,
-
          display: "flex",
          justifyContent: "center",
          alignItems: "center",
@@ -49,7 +49,8 @@
          padding: 10
 
      },
-
+     row: { width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between" },
+     column: { width: "100%", display: "flex", flexDirection: "column" },
      AlertSuccess: {
          marginTop: 10,
          color: "white",
@@ -88,7 +89,11 @@
          width: 320,
          fontFamily: Fonts.title,
          padding: 0,
-
+     },
+     NormalText: {
+         fontFamily: Fonts.normal,
+         fontSize: 20,
+         color: Colors.black
      },
      TextInput: {
          borderBottomColor: Colors.primary,
