@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ActivityIndicator, Text, View, TouchableOpacity, Button } from "react-native";
-import AppStyles, { Colors, Fonts } from "../../layouts/AppStyles";
+import { Colors, Fonts } from "../../layouts/AppStyles";
 import Icon from 'react-native-vector-icons/FontAwesome5'
 //servicios
 import { listarCobros } from '../../api/Service';
@@ -9,7 +9,7 @@ import { listarCobros } from '../../api/Service';
 
 
 
-export default function ({ loteamiento }) { //id loteamiento
+export default function ({ loteamiento, month = null, year = null }) { //id loteamiento
     //estados
 
     const [requesting, setRequesting] = useState(false)
@@ -27,7 +27,11 @@ export default function ({ loteamiento }) { //id loteamiento
     const listarCobros_ = async () => {
 
         setRequesting(true)
-        listarCobros({ loteamiento: loteamiento?.id, page: pagination.page })
+        let parametros = { loteamiento: loteamiento, page: pagination.page };
+        if (month) parametros.month = month;
+        if (year) parametros.year = year;
+
+        listarCobros(parametros)
             .then(jsonResp => {
                 if (jsonResp?.status == 200) {
                     //   console.log(JSON.stringify(jsonResp.data) , null, 2)
@@ -49,13 +53,15 @@ export default function ({ loteamiento }) { //id loteamiento
     }
 
     useEffect(function () {
+        console.log("refrescando")
+        console.log( loteamiento, month, year)
         if (!requesting)
             listarCobros_()
-    }, [loteamiento, pagination.page]); //solo en el primer renderizado []
+    }, [loteamiento, pagination.page, month]); //solo en el primer renderizado []
 
 
 
-  
+
 
     const renderItem = (item) => (
         <View key={item.cuota_id} style={{ width: "100%", marginBottom: 10, padding: 5, backgroundColor: "white" }}>
@@ -125,7 +131,7 @@ export default function ({ loteamiento }) { //id loteamiento
 
 
     //    onEndReached={LoadMoreRandomData} 
-    return <View>
+    return <View style={{width:"100%"}}>
         {pagination?.data.map(renderItem)}
         {requesting && <ActivityIndicator size="large" color="#00ff00" />}
         {
@@ -133,7 +139,7 @@ export default function ({ loteamiento }) { //id loteamiento
                 <Text style={{ fontFamily: Fonts.normal, textAlign: "right", marginTop: 0, marginBottom: 5 }}>Página {pagination.page} de {pagination.totalPaginas}</Text>
                 <Botones></Botones>
             </View>}
-       
+
     </View>
 
 

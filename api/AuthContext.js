@@ -1,22 +1,37 @@
- 
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { createContext, useState , useEffect} from "react";
- 
+import React, { createContext, useState, useEffect } from "react";
+
 
 // Create a context
 const AuthContext = createContext({});
+// Get current auth state from AsyncStorage
+const getAuthStateWithoutHook = async () => {
+  try {
+    const authDataString = await AsyncStorage.getItem("auth");
+    const authData = authDataString;
+    return authData;
+  } catch (err) { }
+};
 
 
 const AuthProvider = ({ children }) => {
-  const [auth, setAuthState] = useState( "");
+  const [auth, setAuthState] = useState("");
+
+
+  const configureAxiosHeaders = (token) => {
+    axios.defaults.headers["Authorization"] = 'Bearer ' + token;
+    //axios.defaults.headers["X-Auth-Phone"] = phone;
+  };
+
+
 
   // Get current auth state from AsyncStorage
   const getAuthState = async () => {
     try {
       const authDataString = await AsyncStorage.getItem("auth");
-      const authData =  authDataString ;
-      // Configure axios headers
-   //   configureAxiosHeaders(authData.token, authData.phone);
+      const authData = authDataString;
+
       setAuthState(authData);
     } catch (err) {
       setAuthState({});
@@ -26,9 +41,9 @@ const AuthProvider = ({ children }) => {
   // Update AsyncStorage & context state
   const setAuth = async (auth) => {
     try {
-      await AsyncStorage.setItem("auth",  auth );
+      await AsyncStorage.setItem("auth", auth);
       // Configure axios headers
-      //configureAxiosHeaders(auth.token, auth.phone);
+      configureAxiosHeaders(authData);
       setAuthState(auth);
     } catch (error) {
       Promise.reject(error);
@@ -46,4 +61,4 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthContext, AuthProvider };
+export { AuthContext, AuthProvider , getAuthStateWithoutHook};

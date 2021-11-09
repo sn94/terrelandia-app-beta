@@ -8,6 +8,7 @@ import AppStyles, { Colors, Fonts } from "../../layouts/AppStyles";
 import makeRequest from "../../api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../../api/AuthContext";
+import WelcomeLoading from "../../layouts/WelcomeLoading";
 
 
 export default function Login({ navigation }) {
@@ -47,26 +48,27 @@ export default function Login({ navigation }) {
         navigation.navigate('ResetPassword')
     }
 
-    return <LinearGradient colors={['#b0e3fd', 'white']} style={AppStyles.Container} >
-        <Image style={AppStyles.Logo} source={{ uri: 'https://clientes.terrelandia.com/public/img/logo.png' }} />
-        <Text style={{ width: 320, color: "black", fontSize: 24, fontFamily: Fonts.title }} > ¡Bienvenido! </Text>
-        <Text style={AppStyles.Text} > Ingresa tus datos </Text>
+    return auth ? <WelcomeLoading /> :
+        <LinearGradient colors={['#b0e3fd', 'white']} style={AppStyles.Container} >
+            <Image style={AppStyles.Logo} source={{ uri: 'https://clientes.terrelandia.com/public/img/logo.png' }} />
+            <Text style={{ width: 320, color: "black", fontSize: 24, fontFamily: Fonts.title }} > ¡Bienvenido! </Text>
+            <Text style={AppStyles.Text} > Ingresa tus datos </Text>
 
-        <Text style={AppStyles.Text} > Cédula o RUC </Text>
-        <TextInput onChangeText={setCedula} style={AppStyles.TextInput} />
-        <Text style={AppStyles.Text} > Contraseña </Text>
-        <TextInput onChangeText={setPass} secureTextEntry={true} style={AppStyles.TextInput} />
+            <Text style={AppStyles.Text} > Cédula o RUC </Text>
+            <TextInput onChangeText={setCedula} style={AppStyles.TextInput} />
+            <Text style={AppStyles.Text} > Contraseña </Text>
+            <TextInput onChangeText={setPass} secureTextEntry={true} style={AppStyles.TextInput} />
 
 
-        <TouchableOpacity style={AppStyles.Button} onPress={signIn}>
-            <Text style={AppStyles.ButtonText}>Ingresar</Text>
-            {requesting ? <ActivityIndicator size="large" color="#00ff00" /> : undefined}
+            <TouchableOpacity style={AppStyles.Button} onPress={signIn}>
+                <Text style={AppStyles.ButtonText}>Ingresar</Text>
+                {requesting ? <ActivityIndicator size="large" color="#00ff00" /> : undefined}
 
-        </TouchableOpacity>
-        <TouchableOpacity onPress={resetPassword}>
-            <Text style={{ width: 320, fontFamily: Fonts.title, marginTop: 10, color: Colors.primary, fontSize: 20, textDecorationLine: "underline" }}>¿Olvidaste tu contraseña?</Text>
-        </TouchableOpacity>
-    </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={resetPassword}>
+                <Text style={{ width: 320, fontFamily: Fonts.title, marginTop: 10, color: Colors.primary, fontSize: 20, textDecorationLine: "underline" }}>¿Olvidaste tu contraseña?</Text>
+            </TouchableOpacity>
+        </LinearGradient>
 
 
 

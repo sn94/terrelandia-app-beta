@@ -10,7 +10,6 @@ const doQueryParams = function(query) {
                 return k + '=' + v;
             }
         );
-
     }
 
     let queryparam = queries.join('&')
@@ -24,7 +23,11 @@ const listarLoteamientos = async() => {
     const jsonResp = await makeRequest(urlLotea)
     return jsonResp //.data.message)
 }
-
+const listarMisLoteamientos = async() => {
+    let urlLotea = "api/mis-loteamientos"
+    const jsonResp = await makeRequest(urlLotea)
+    return jsonResp //.data.message)
+}
 
 
 const getLoteamiento = async(idLoteamieno) => {
@@ -48,4 +51,4 @@ const listarCobros = async(query = undefined) => {
 }
 
 
-export { listarCobros, listarLoteamientos, getLoteamiento }
+export { listarCobros, listarLoteamientos, listarMisLoteamientos, getLoteamiento }

@@ -102,7 +102,7 @@ export default function Index({ route }) {
                 <Text style={{ fontWeight: "bold", }}>Últimas cobranzas</Text>
             </Text>
         </View>
-        <ListaDeCobros loteamiento={loteamiento}></ListaDeCobros>
+        <ListaDeCobros loteamiento={loteamiento.id}></ListaDeCobros>
     </ScrollView>
 
 }

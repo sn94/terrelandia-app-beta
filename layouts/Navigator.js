@@ -12,7 +12,7 @@ import SideBar from '../layouts/SideBar'
 import Login from '../screens/Auth/Login';
 import Logout from '../screens/Auth/Logout'
 import ResetPassword from '../screens/ResetPassword'
-import Loteamientos from '../screens/Loteamientos/index';
+import Loteamientos from '../screens/MisLoteamientos/index';
 import LiquidacionPrevista from "../screens/LiquidacionPrevista/index";
 import Historial from "../screens/Cobros/Historial";
 //Iconos
@@ -65,8 +65,9 @@ export default function () {
 
   const BeforeAuth = () => {
 
-    return <Stack.Navigator initialRouteName="WelcomeLoading" screenOptions={{ headerShown: false }} >
-      <Stack.Screen name="welcome" component={WelcomeLoading} />
+    return <Stack.Navigator initialRouteName="Waiting" screenOptions={{ headerShown: false }} >
+
+      <Stack.Screen name="Waiting" component={WelcomeLoading} />  
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
@@ -77,7 +78,7 @@ export default function () {
     return <Drawer.Navigator initialRouteName="LoteamientosGroup" screenOptions={{ headerShown: false }} drawerContent={(props) => <SideBar {...props} />}  >
       <Drawer.Screen name="LoteamientosGroup" component={LoteamientosOpts}
         options={{
-          headerShown: true, title: 'Loteamientos', ...tema.HeaderBar,
+          headerShown: true, title: 'Mis Loteamientos', ...tema.HeaderBar,
           drawerIcon: () => <Icon name="map-marked-alt" size={20} solid color={Colors.black}></Icon>,
 
         }} />
@@ -102,10 +103,7 @@ export default function () {
 
   }
   //drawerContent={()=>( <Image style={{width:100,height:100}} source={{uri: 'https://clientes.terrelandia.com/public/img/logo.png'}}/>)}
-
-
-
-
+ 
 
   return <NavigationContainer theme={MyTheme}    >
     {
