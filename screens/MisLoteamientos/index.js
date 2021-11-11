@@ -22,7 +22,7 @@ export default function Loteamientos({ navigation }) {
         setRequesting(true)
         const jsonResp = await listarMisLoteamientos() 
         if (jsonResp?.status == 200) {
-            //    console.log(JSON.stringify(jsonResp.data, null, 2))
+           
             setData(jsonResp.data)
         } else
             alert(jsonResp.data.message)
@@ -38,7 +38,7 @@ export default function Loteamientos({ navigation }) {
     }, [])//solo en el primer renderizado
 
     const renderItem = ({ item }) => (
-        <Item  navigation={navigation} data={item}  ></Item>
+        <Item key={item}  navigation={navigation} data={item}  ></Item>
     );
     return requesting ? <ActivityIndicator size="large" color="#00ff00" /> :
         <SafeAreaView style={AppStyles.Container}>

@@ -10,6 +10,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../../api/AuthContext";
 import WelcomeLoading from "../../layouts/WelcomeLoading";
 
+//FCM
+import { registerFcmToken } from '../../fcm/index'
 
 export default function Login({ navigation }) {
 
@@ -19,8 +21,6 @@ export default function Login({ navigation }) {
     const [requesting, setRequesting] = useState(false)
     //actualiza auth token
     const { auth, setAuth } = useContext(AuthContext);
-
-
 
     const signIn = async () => {
 
@@ -36,6 +36,8 @@ export default function Login({ navigation }) {
                 //GUARDAR TOKEN AUTH
                 const theToken = jsonResp.data.token;
                 await AsyncStorage.setItem("auth", theToken);
+                //registrar token fcm
+                registerFcmToken()
                 //actualizar contexto
                 setAuth(theToken);
                 // navigation.navigate('Loteamientos')
@@ -47,6 +49,7 @@ export default function Login({ navigation }) {
     const resetPassword = () => {
         navigation.navigate('ResetPassword')
     }
+
 
     return auth ? <WelcomeLoading /> :
         <LinearGradient colors={['#b0e3fd', 'white']} style={AppStyles.Container} >

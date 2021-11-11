@@ -38,10 +38,10 @@ const detailStyles = StyleSheet.create({
 
 export default function Index({ route }) {
 
-    const [requesting, setRequesting] = useState({ requesting: false, loteamiento })
+    const [requesting, setRequesting] = useState({ requesting: false, loteamiento: {} })
     const idLoteamiento = route?.params?.loteamiento?.id
 
-
+ 
     const verLoteamiento = async () => {
 
         setRequesting({ ...requesting, requesting: true })
@@ -49,10 +49,10 @@ export default function Index({ route }) {
         getLoteamiento(idLoteamiento)
             .then((jsonResp) => {
                 if (jsonResp?.status == 200) {
-                    console.log("LOTEAMIENTO", JSON.stringify(jsonResp, null, 2))
+            
                     setRequesting({ requesting: false, loteamiento: jsonResp.data })
                 } else {
-                    console.log(jsonResp.data.message)
+                   
                     setRequesting({ ...requesting, requesting: false })
                 }
             }).catch((err) => {
@@ -89,8 +89,8 @@ export default function Index({ route }) {
     }
 
     useEffect(function () {
-        console.log("Use effect Cobros index")
-        verLoteamiento()
+        
+        verLoteamiento() //fetch data ...
     }, [])
 
     return <ScrollView style={{ padding: 10, }}>

@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
+import {   Text, Image, StyleSheet, TouchableOpacity } from "react-native"
 import AppStyles, { Colors, Fonts } from '../../layouts/AppStyles'
 import { base_url } from '../../api/index'
 
@@ -18,7 +18,7 @@ const loteamientoItemStyle = StyleSheet.create({
 export default function ({ data , navigation}) {
 
     const verDetalle= ()=>{
-        navigation.navigate("DetalleLoteamiento", { loteamiento: data})
+        navigation.navigate("Cobros", { loteamiento: data})
     }
  
     const item = data

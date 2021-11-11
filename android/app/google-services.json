@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "416434170649",
+    "project_id": "terrelandia-e1528",
+    "storage_bucket": "terrelandia-e1528.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416434170649:android:db0d1360730f978ad43388",
+        "android_client_info": {
+          "package_name": "com.terrelandia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "416434170649-ca0acu6gcjrfq7css6b3era48qbatn97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOb4iaHqxSj9JEUYDaZxuwclUxZcNztFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "416434170649-ca0acu6gcjrfq7css6b3era48qbatn97.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

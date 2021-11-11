@@ -24,8 +24,9 @@ import tema, { Colors } from '../layouts/AppStyles'
 
 //Context
 import { AuthContext } from "../api/AuthContext";
-import DetailCobro from "../screens/Cobros/index";
+import Cobro from "../screens/Cobros/index";
 import WelcomeLoading from "./WelcomeLoading";
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -53,11 +54,16 @@ export default function () {
   //estado del token definira la navegacion
   const { auth } = useContext(AuthContext);
 
+
+
+
+
+  
   const LoteamientosOpts = () => {
     return <Stack.Navigator>
       <Stack.Screen name="Loteamientos" component={Loteamientos}
         options={{ headerShown: false }} />
-      <Stack.Screen name="DetalleLoteamiento" component={DetailCobro}
+      <Stack.Screen name="Cobros" component={Cobro}
         options={{ headerShown: false }} />
 
     </Stack.Navigator>
@@ -65,9 +71,9 @@ export default function () {
 
   const BeforeAuth = () => {
 
-    return <Stack.Navigator initialRouteName="Waiting" screenOptions={{ headerShown: false }} >
+    return <Stack.Navigator initialRouteName={auth ? 'Waiting' : 'Login'} screenOptions={{ headerShown: false }} >
 
-      <Stack.Screen name="Waiting" component={WelcomeLoading} />  
+      <Stack.Screen name="Waiting" component={WelcomeLoading} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
@@ -82,7 +88,7 @@ export default function () {
           drawerIcon: () => <Icon name="map-marked-alt" size={20} solid color={Colors.black}></Icon>,
 
         }} />
-          <Drawer.Screen name="LiquidacionPrevista" component={LiquidacionPrevista}
+      <Drawer.Screen name="LiquidacionPrevista" component={LiquidacionPrevista}
         options={{
           headerShown: true, title: 'Liquidacion prevista', ...tema.HeaderBar,
           drawerIcon: () => <Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>,
@@ -103,7 +109,8 @@ export default function () {
 
   }
   //drawerContent={()=>( <Image style={{width:100,height:100}} source={{uri: 'https://clientes.terrelandia.com/public/img/logo.png'}}/>)}
- 
+
+
 
   return <NavigationContainer theme={MyTheme}    >
     {

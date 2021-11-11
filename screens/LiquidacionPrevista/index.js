@@ -35,7 +35,7 @@ export default function Index() {
 
                     setRequesting({ requesting: false, loteamiento: jsonResp.data })
                 } else {
-                    console.log(jsonResp.data.message)
+                  
                     setRequesting({ ...requesting, requesting: false })
                 }
             }).catch((err) => {

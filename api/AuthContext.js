@@ -1,8 +1,8 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import React, { createContext, useState, useEffect } from "react";
-
-
+ 
 // Create a context
 const AuthContext = createContext({});
 // Get current auth state from AsyncStorage
@@ -43,6 +43,7 @@ const AuthProvider = ({ children }) => {
     try {
       await AsyncStorage.setItem("auth", auth);
       // Configure axios headers
+      const authData = auth;
       configureAxiosHeaders(authData);
       setAuthState(auth);
     } catch (error) {

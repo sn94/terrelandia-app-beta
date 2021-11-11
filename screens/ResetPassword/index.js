@@ -23,7 +23,7 @@ export default function ResetPassword() {
         if (jsonResp.status == 200)
             setRequesting({ sent: true, message: jsonResp.data.message })
         else {
-            console.log(JSON.stringify(jsonResp, null, 2))
+             
             setRequesting({ sent: true, error: true, message: jsonResp.data.error });
         }
         //setRequesting(false)

@@ -53,8 +53,7 @@ export default function ({ loteamiento, month = null, year = null }) { //id lote
     }
 
     useEffect(function () {
-        console.log("refrescando")
-        console.log( loteamiento, month, year)
+         
         if (!requesting)
             listarCobros_()
     }, [loteamiento, pagination.page, month]); //solo en el primer renderizado []
