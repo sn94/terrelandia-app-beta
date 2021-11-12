@@ -74,7 +74,7 @@ gastos_administrativos
 comisiones_vendedores
 otros_gastos
 */
-const getTotalsAboutLote = async(query = undefined) => {
+const getTotals = async(query = undefined) => {
 
     let urlLotea = "api/totals";
     let queryparam = doQueryParams(query)
@@ -92,4 +92,4 @@ const getTotalsAboutLote = async(query = undefined) => {
 
 
 
-export { updateToken, listarCobros, listarLoteamientos, listarMisLoteamientos, getLoteamiento }
+export { updateToken, listarCobros, listarLoteamientos, listarMisLoteamientos, getLoteamiento, getTotals }

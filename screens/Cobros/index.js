@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useEffect, useState } from "react/cjs/react.development";
 import { Colors, Fonts } from '../../layouts/AppStyles'
 import ListaDeCobros from './Detalle';
-import { getLoteamiento } from '../../api/Service'
+import { getTotals } from '../../api/Service'
 
 const Box = {
     width: "100%",
@@ -46,7 +46,7 @@ export default function Index({ route }) {
 
         setRequesting({ ...requesting, requesting: true })
 
-        getLoteamiento(idLoteamiento)
+        getTotals({  loteamiento: idLoteamiento})
             .then((jsonResp) => {
                 if (jsonResp?.status == 200) {
             
@@ -72,7 +72,7 @@ export default function Index({ route }) {
             <View style={detailStyles.greenBox}>
                 <View >
                     <Text style={detailStyles.BoxText}>Cobrados</Text>
-                    <Text style={detailStyles.BoxText}>{loteamiento?.formatted_total_cuotas_cobradas}</Text>
+                    <Text style={detailStyles.BoxText}>{loteamiento?.total_cuotas_cobradas}</Text>
                 </View>
 
                 <Icon name="arrow-up" size={70} solid color="#ffffff"></Icon>
@@ -80,7 +80,7 @@ export default function Index({ route }) {
             <View style={detailStyles.redBox}>
                 <View >
                     <Text style={detailStyles.BoxText}>En Mora</Text>
-                    <Text style={detailStyles.BoxText}>{loteamiento?.formatted_total_cuotas_en_mora}</Text>
+                    <Text style={detailStyles.BoxText}>{loteamiento?.total_cuotas_en_mora}</Text>
                 </View>
 
                 <Icon name="arrow-down" size={70} solid color="#ffffff"></Icon>
@@ -102,7 +102,7 @@ export default function Index({ route }) {
                 <Text style={{ fontWeight: "bold", }}>Últimas cobranzas</Text>
             </Text>
         </View>
-        <ListaDeCobros loteamiento={loteamiento.id}></ListaDeCobros>
+        <ListaDeCobros loteamiento={loteamiento.loteamiento}></ListaDeCobros>
     </ScrollView>
 
 }

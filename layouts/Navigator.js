@@ -19,13 +19,13 @@ import Historial from "../screens/Cobros/Historial";
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
 //Themes
-import tema, { Colors } from '../layouts/AppStyles'
-
+import { Fonts, Colors } from '../layouts/AppStyles'
 
 //Context
 import { AuthContext } from "../api/AuthContext";
 import Cobro from "../screens/Cobros/index";
 import WelcomeLoading from "./WelcomeLoading";
+import { Image } from "react-native";
 
 
 const Drawer = createDrawerNavigator();
@@ -58,67 +58,97 @@ export default function () {
 
 
 
-  
+
   const LoteamientosOpts = () => {
-    return <Stack.Navigator>
+    return <>
       <Stack.Screen name="Loteamientos" component={Loteamientos}
         options={{ headerShown: false }} />
       <Stack.Screen name="Cobros" component={Cobro}
         options={{ headerShown: false }} />
-
-    </Stack.Navigator>
+    </>
   }
 
   const BeforeAuth = () => {
 
-    return <Stack.Navigator initialRouteName={auth ? 'Waiting' : 'Login'} screenOptions={{ headerShown: false }} >
-
+    return <>
       <Stack.Screen name="Waiting" component={WelcomeLoading} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
-    </Stack.Navigator>
+    </>
   }
 
 
   const AfterAuth = () => {
-    return <Drawer.Navigator initialRouteName="LoteamientosGroup" screenOptions={{ headerShown: false }} drawerContent={(props) => <SideBar {...props} />}  >
+    return <>
       <Drawer.Screen name="LoteamientosGroup" component={LoteamientosOpts}
-        options={{
-          headerShown: true, title: 'Mis Loteamientos', ...tema.HeaderBar,
-          drawerIcon: () => <Icon name="map-marked-alt" size={20} solid color={Colors.black}></Icon>,
+        options={
+          ({ navigation }) => {
 
-        }} />
+            return {
+              headerShown: true, title: 'Mis Loteamientos',
+              drawerIcon: () => (<Icon name="map-marked-alt" size={20} solid color={Colors.black}></Icon>),
+            };
+          }
+        } />
       <Drawer.Screen name="LiquidacionPrevista" component={LiquidacionPrevista}
         options={{
-          headerShown: true, title: 'Liquidacion prevista', ...tema.HeaderBar,
-          drawerIcon: () => <Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>,
-
+          headerShown: true, title: 'Liquidacion prevista',
+          drawerIcon: () => (<Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>),
         }} />
       <Drawer.Screen name="HistorialCobranza" component={Historial}
         options={{
-          headerShown: true, title: 'Historial de cobranzas', ...tema.HeaderBar,
-          drawerIcon: () => <Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>,
-
+          headerShown: true, title: 'Historial de cobranzas',
+          drawerIcon: () => (<Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>),
         }} />
-
       <Drawer.Screen name="Logout" component={Logout}
         options={{
-          headerShown: false, title: 'Salir', ...tema.HeaderBar, drawerIcon: () => <Icon name="sign-out-alt" size={20} solid color={Colors.black}></Icon>
+          headerShown: false, title: 'Salir', drawerIcon: () => (<Icon name="sign-out-alt" size={20} solid color={Colors.black}></Icon>)
         }} />
-    </Drawer.Navigator>
+    </>
 
   }
   //drawerContent={()=>( <Image style={{width:100,height:100}} source={{uri: 'https://clientes.terrelandia.com/public/img/logo.png'}}/>)}
 
 
 
-  return <NavigationContainer theme={MyTheme}    >
-    {
-      auth ?
-        <AfterAuth />
-        :
-        <BeforeAuth />
-    }
+  return <NavigationContainer theme={MyTheme}>
+    <Drawer.Navigator initialRouteName="LoteamientosGroup"
+      screenOptions={
+        {
+          headerShown: auth ? true : false,
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTitleStyle: {
+            fontFamily: Fonts.normal,
+            color: Colors.gray
+          },
+          headerRight: () => (<Image source={
+            { uri: "https://clientes.terrelandia.com/public/img/logo_icon.png" }}
+            style={
+              { width: 50, height: 50, marginRight: 5 }
+            }
+          />)
+        }}
 
+
+      drawerContent={(props) => auth && (<SideBar {...props} />)}
+
+      navigationOptions={({ navigation }) => ({
+        headerTitleStyle: {
+          fontFamily: Fonts.normal,
+          color: Colors.gray
+        },
+        headerLeft: (<Icon onPress={() => navigation.openDrawer()} style={{ marginLeft: 7 }} name="bars" size={20} solid color="#000000"></Icon>),
+      })
+      }
+    >
+      {auth ? (<Drawer.Screen name="AfterAuthGroup" component={AfterAuth}
+        options={{ headerShown: false }} />)
+        :
+        (<Drawer.Screen name="beforeAuthGroup" component={BeforeAuth}
+          options={{ headerShown: false }} />)
+      }
+    </Drawer.Navigator>
   </NavigationContainer>
 }

@@ -9,6 +9,8 @@ import App from './App';
 import { name as appName } from './app.json';
 //FCM
 import { registerFcmToken } from './fcm/index'
+import {LogBox } from 'react-native';
+LogBox.ignoreLogs(['Reanimated 2']);
 
 
 //fXdJVueUTFupnAn5ChoKyc:APA91bGYQnw0nQh3UtcQx4GSEl8oFgrHKWih0fOPXx8qRfG3QUa-mn9A2FrF0NDsW-DklqzPGNniYQRdLICupROLL5xebq-PxSXP198mnQh3oqmHKq8wJekN-fZcCUI1bpdYrbHRBXqA
