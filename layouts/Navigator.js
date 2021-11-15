@@ -60,59 +60,22 @@ export default function () {
 
 
   const LoteamientosOpts = () => {
-    return <>
+    return <Stack.Navigator>
       <Stack.Screen name="Loteamientos" component={Loteamientos}
         options={{ headerShown: false }} />
       <Stack.Screen name="Cobros" component={Cobro}
         options={{ headerShown: false }} />
-    </>
+    </Stack.Navigator>
   }
+ 
 
-  const BeforeAuth = () => {
-
-    return <>
-      <Stack.Screen name="Waiting" component={WelcomeLoading} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="ResetPassword" component={ResetPassword} />
-    </>
-  }
-
-
-  const AfterAuth = () => {
-    return <>
-      <Drawer.Screen name="LoteamientosGroup" component={LoteamientosOpts}
-        options={
-          ({ navigation }) => {
-
-            return {
-              headerShown: true, title: 'Mis Loteamientos',
-              drawerIcon: () => (<Icon name="map-marked-alt" size={20} solid color={Colors.black}></Icon>),
-            };
-          }
-        } />
-      <Drawer.Screen name="LiquidacionPrevista" component={LiquidacionPrevista}
-        options={{
-          headerShown: true, title: 'Liquidacion prevista',
-          drawerIcon: () => (<Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>),
-        }} />
-      <Drawer.Screen name="HistorialCobranza" component={Historial}
-        options={{
-          headerShown: true, title: 'Historial de cobranzas',
-          drawerIcon: () => (<Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>),
-        }} />
-      <Drawer.Screen name="Logout" component={Logout}
-        options={{
-          headerShown: false, title: 'Salir', drawerIcon: () => (<Icon name="sign-out-alt" size={20} solid color={Colors.black}></Icon>)
-        }} />
-    </>
-
-  }
+   
   //drawerContent={()=>( <Image style={{width:100,height:100}} source={{uri: 'https://clientes.terrelandia.com/public/img/logo.png'}}/>)}
 
 
 
   return <NavigationContainer theme={MyTheme}>
-    <Drawer.Navigator initialRouteName="LoteamientosGroup"
+    <Drawer.Navigator initialRouteName={ auth ? "Loteamientos" : "Login"}
       screenOptions={
         {
           headerShown: auth ? true : false,
@@ -132,7 +95,7 @@ export default function () {
         }}
 
 
-      drawerContent={(props) => auth && (<SideBar {...props} />)}
+      drawerContent={(props) => auth ? (<SideBar {...props} />):null}
 
       navigationOptions={({ navigation }) => ({
         headerTitleStyle: {
@@ -143,11 +106,38 @@ export default function () {
       })
       }
     >
-      {auth ? (<Drawer.Screen name="AfterAuthGroup" component={AfterAuth}
-        options={{ headerShown: false }} />)
+      {auth ?  
+      (<>
+        <Drawer.Screen name="LoteamientosGroup" component={LoteamientosOpts} initialRouteName="Loteamientos"
+          options={
+            ({ navigation }) => {
+  
+              return {
+                headerShown: true, title: 'Mis Loteamientos',
+                drawerIcon: () => (<Icon name="map-marked-alt" size={20} solid color={Colors.black}></Icon>),
+              };
+            }
+          } />
+        <Drawer.Screen name="LiquidacionPrevista" component={LiquidacionPrevista}
+          options={{
+            headerShown: true, title: 'Liquidacion prevista',
+            drawerIcon: () => (<Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>),
+          }} />
+        <Drawer.Screen name="HistorialCobranza" component={Historial}
+          options={{
+            headerShown: true, title: 'Historial de cobranzas',
+            drawerIcon: () => (<Icon name="file-invoice-dollar" size={20} solid color={Colors.black}></Icon>),
+          }} />
+        <Drawer.Screen name="Logout" component={Logout}
+          options={{
+            headerShown: false, title: 'Salir', drawerIcon: () => (<Icon name="sign-out-alt" size={20} solid color={Colors.black}></Icon>)
+          }} />
+      </>)
         :
-        (<Drawer.Screen name="beforeAuthGroup" component={BeforeAuth}
-          options={{ headerShown: false }} />)
+        (<>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+        </>)
       }
     </Drawer.Navigator>
   </NavigationContainer>
